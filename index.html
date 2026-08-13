@@ -212,9 +212,9 @@
   /* TEAM */
   .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
   .team-card{background:var(--bg-1);border:1px solid var(--line);}
-  .team-photo{position:relative;aspect-ratio:3/4;overflow:hidden;background:#000;}
+  .team-photo{position:relative;aspect-ratio:4/5;overflow:hidden;background:#000;}
   .team-photo img{
-    position:absolute;top:-3%;left:-3%;width:106%;height:106%;object-fit:cover;
+    position:absolute;top:-3%;left:-3%;width:106%;height:106%;object-fit:cover;object-position:50% 12%;
     filter:grayscale(.3) contrast(1.05) brightness(.85);
   }
   .team-body{padding:22px 22px 26px;}
@@ -359,7 +359,11 @@
     .foot-grid{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:720px){
+    .nav{gap:8px;}
     .nav-right .nav-phone{display:none;}
+    .nav-center .brand{display:none;}
+    .brandmark-sm{height:38px;}
+    .nav-right .btn-primary{padding:10px 14px;font-size:11px;}
     .brand{font-size:15px;}
     section{padding:64px 0;}
     .brandmark-lg{width:150px;}
