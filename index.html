@@ -200,7 +200,7 @@
   }
   .adv-list{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);}
   .adv-row{
-    display:flex;flex-direction:column;gap:10px;padding:30px 26px;
+    display:flex;flex-direction:column;gap:10px;padding:30px 26px;cursor:pointer;
     border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .2s;
   }
   .adv-row:last-child{border-right:none;}
@@ -208,6 +208,20 @@
   .adv-row .idx{font-family:'Unbounded';font-size:22px;color:var(--accent);}
   .adv-row h4{font-size:18px;text-transform:none;}
   .adv-row p{font-size:13px;color:var(--text-2);}
+
+  /* TEAM */
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .team-card{background:var(--bg-1);border:1px solid var(--line);}
+  .team-photo{position:relative;aspect-ratio:3/4;overflow:hidden;background:#000;}
+  .team-photo img{
+    position:absolute;top:-3%;left:-3%;width:106%;height:106%;object-fit:cover;
+    filter:grayscale(.3) contrast(1.05) brightness(.85);
+  }
+  .team-body{padding:22px 22px 26px;}
+  .team-role{display:block;font-family:'Space Grotesk';font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .team-body h4{font-size:18px;margin-bottom:10px;text-transform:none;}
+  .team-exp{display:inline-block;font-family:'Unbounded';font-size:11px;color:var(--text-2);border:1px solid var(--line);padding:4px 10px;margin-bottom:12px;}
+  .team-body p{font-size:12.5px;color:var(--text-2);}
 
   /* PROCESS — left to right */
   .steps-vert{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
@@ -323,17 +337,19 @@
 
   @media (max-width:960px){
     .hero-grid2{grid-template-columns:1fr;}
-    .hero-photo{order:-1;min-height:280px;}
+    .hero-photo{min-height:280px;}
     .services-grid{grid-template-columns:1fr;}
     .svc-card{aspect-ratio:16/11;}
     .svc-img{transform:none !important;filter:grayscale(.1) contrast(1.05) brightness(.55) !important;}
-    .svc-overlay{opacity:1;background:linear-gradient(180deg, rgba(18,19,23,.1) 15%, rgba(18,19,23,.97) 100%);}
-    .svc-overlay-inner{transform:translateY(0);}
+    .svc-overlay{display:none;}
+    .svc-title-bar h3{font-size:15px;}
+    .svc-title-index{width:26px;height:26px;font-size:11px;}
     .brandmark-lg{width:min(220px,50vw);}
     .hero-strip{grid-template-columns:1fr 1fr;}
     .hero-strip div:nth-child(2){border-right:none;}
     .adv-list{grid-template-columns:1fr 1fr;}
     .adv-row:nth-child(2){border-right:none;}
+    .team-grid{grid-template-columns:1fr 1fr;}
     .steps-vert{grid-template-columns:1fr 1fr;}
     .step-v:nth-child(2){border-right:none;}
     .rv-slide{flex-basis:84%;}
@@ -351,11 +367,14 @@
     .hero-strip{grid-template-columns:1fr 1fr;}
     .adv-list{grid-template-columns:1fr;}
     .adv-row{border-right:none !important;}
+    .team-grid{grid-template-columns:1fr;}
     .steps-vert{grid-template-columns:1fr;}
     .step-v{border-right:none !important;}
     .rv-track{padding:4px 6% 28px;margin:-4px -6% -28px;}
     .rv-slide{flex-basis:92%;}
     .rv-arrow{width:38px;height:38px;}
+    .price-tabs{width:100%;}
+    .price-tab{flex:1;padding:11px 4px;font-size:10.5px;text-align:center;}
     .form-row{grid-template-columns:1fr;}
     .cta-band{padding:36px 26px;}
     .foot-grid{grid-template-columns:1fr;}
@@ -390,10 +409,11 @@
   </div>
   <ul class="drawer-links">
     <li><a href="#services"><b>01</b>Услуги</a></li>
-    <li><a href="#prices"><b>02</b>Цены</a></li>
-    <li><a href="#advantages"><b>03</b>Почему мы</a></li>
-    <li><a href="#reviews"><b>04</b>Отзывы</a></li>
-    <li><a href="#contacts"><b>05</b>Контакты</a></li>
+    <li><a href="#advantages"><b>02</b>Почему мы</a></li>
+    <li><a href="#team"><b>03</b>Наши мастера</a></li>
+    <li><a href="#prices"><b>04</b>Цены</a></li>
+    <li><a href="#reviews"><b>05</b>Отзывы</a></li>
+    <li><a href="#contacts"><b>06</b>Контакты</a></li>
   </ul>
   <div class="drawer-foot">
     <a href="tel:+79777721777" class="nav-phone">+7 (977) 772-17-77</a>
@@ -521,22 +541,22 @@
         </div>
       </div>
       <div class="adv-list">
-        <div class="adv-row">
+        <div class="adv-row" data-goto="prices" role="button" tabindex="0" aria-label="Перейти к прайс-листу">
           <span class="idx">01</span>
           <h4>Фиксированная смета</h4>
           <p>Называем цену после диагностики и не меняем её в процессе работ.</p>
         </div>
-        <div class="adv-row">
+        <div class="adv-row" data-goto="team" role="button" tabindex="0" aria-label="Перейти к разделу «Наши мастера»">
           <span class="idx">02</span>
           <h4>Опытные механики</h4>
           <p>Специалисты с профильным опытом и регулярным повышением квалификации.</p>
         </div>
-        <div class="adv-row">
+        <div class="adv-row" data-goto="reviews" role="button" tabindex="0" aria-label="Перейти к отзывам">
           <span class="idx">03</span>
           <h4>Гарантия на работы</h4>
           <p>Даём письменную гарантию на все виды выполненного ремонта — 12 месяцев.</p>
         </div>
-        <div class="adv-row">
+        <div class="adv-row" data-goto="contacts" role="button" tabindex="0" aria-label="Перейти к контактам">
           <span class="idx">04</span>
           <h4>Оригинальные запчасти</h4>
           <p>Работаем только с проверенными поставщиками, аналоги — по согласованию.</p>
@@ -575,12 +595,62 @@
     </div>
   </section>
 
+  <!-- TEAM -->
+  <section id="team">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Раздел <b>04</b> — Наши мастера</span>
+          <h2>Люди, которые чинят ваш автомобиль</h2>
+        </div>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo"><img src="images/master-1.jpg" alt="Сергей Волков"></div>
+          <div class="team-body">
+            <span class="team-role">Ведущий мастер-диагност</span>
+            <h4>Сергей Волков</h4>
+            <span class="team-exp">Стаж 14 лет</span>
+            <p>Начинал в дилерском центре, последние 8 лет отвечает за компьютерную диагностику и сложные случаи с электроникой.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><img src="images/master-2.jpg" alt="Игорь Панов"></div>
+          <div class="team-body">
+            <span class="team-role">Мастер по ходовой части</span>
+            <h4>Игорь Панов</h4>
+            <span class="team-exp">Стаж 9 лет</span>
+            <p>Специализируется на подвеске и тормозной системе. По выходным готовит машины друзей к любительским трековым заездам.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><img src="images/master-3.jpg" alt="Роман Ефимов"></div>
+          <div class="team-body">
+            <span class="team-role">Мастер шиномонтажа</span>
+            <h4>Роман Ефимов</h4>
+            <span class="team-exp">Стаж 6 лет</span>
+            <p>Отвечает за шиномонтаж и развал-схождение. Следит, чтобы после его смены руль не уводило даже на пустой парковке.</p>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><img src="images/master-4.jpg" alt="Артём Гусев"></div>
+          <div class="team-body">
+            <span class="team-role">Механик по ремонту двигателей</span>
+            <h4>Артём Гусев</h4>
+            <span class="team-exp">Стаж 11 лет</span>
+            <p>Капитальные ремонты и восстановление двигателей — его профиль. Раньше работал на СТО грузового транспорта.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICES -->
   <section id="prices">
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>04</b> — Прайс-лист</span>
+          <span class="eyebrow">Раздел <b>05</b> — Прайс-лист</span>
           <h2>Ориентировочные цены</h2>
         </div>
         <p class="lead">Итоговая стоимость зависит от марки автомобиля и определяется после диагностики.</p>
@@ -625,7 +695,7 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>05</b> — Отзывы</span>
+          <span class="eyebrow">Раздел <b>06</b> — Отзывы</span>
           <h2>Что говорят клиенты</h2>
         </div>
       </div>
@@ -719,7 +789,7 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>06</b> — Контакты</span>
+          <span class="eyebrow">Раздел <b>07</b> — Контакты</span>
           <h2>Запишитесь на удобное время</h2>
         </div>
         <p class="lead">Оставьте заявку — перезвоним в течение 15 минут.</p>
@@ -874,18 +944,50 @@
     });
   });
 
+  document.querySelectorAll('[data-goto]').forEach(el => {
+    function goToSection(){
+      const target = document.getElementById(el.dataset.goto);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    el.addEventListener('click', goToSection);
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        goToSection();
+      }
+    });
+  });
+
   const rvTrack = document.getElementById('rvTrack');
   const rvPrev = document.getElementById('rvPrev');
   const rvNext = document.getElementById('rvNext');
   if(rvTrack && rvPrev && rvNext){
-    function rvScroll(dir){
-      const slide = rvTrack.querySelector('.rv-slide');
-      const gap = parseFloat(getComputedStyle(rvTrack).gap) || 20;
-      const amount = slide.getBoundingClientRect().width + gap;
-      rvTrack.scrollBy({left: dir * amount, behavior: 'smooth'});
+    const rvSlides = Array.from(rvTrack.querySelectorAll('.rv-slide'));
+
+    function rvCurrentIndex(){
+      const trackRect = rvTrack.getBoundingClientRect();
+      const centerX = trackRect.left + trackRect.width / 2;
+      let closest = 0, closestDist = Infinity;
+      rvSlides.forEach((slide, i) => {
+        const r = slide.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - centerX);
+        if(dist < closestDist){ closestDist = dist; closest = i; }
+      });
+      return closest;
     }
-    rvPrev.addEventListener('click', () => rvScroll(-1));
-    rvNext.addEventListener('click', () => rvScroll(1));
+
+    function rvGoTo(index){
+      const total = rvSlides.length;
+      const wrapped = ((index % total) + total) % total;
+      const slide = rvSlides[wrapped];
+      const trackRect = rvTrack.getBoundingClientRect();
+      const slideRect = slide.getBoundingClientRect();
+      const target = rvTrack.scrollLeft + (slideRect.left - trackRect.left) - (rvTrack.clientWidth - slideRect.width) / 2;
+      rvTrack.scrollTo({left: target, behavior: 'smooth'});
+    }
+
+    rvPrev.addEventListener('click', () => rvGoTo(rvCurrentIndex() - 1));
+    rvNext.addEventListener('click', () => rvGoTo(rvCurrentIndex() + 1));
   }
 
   const form = document.getElementById('leadForm');
