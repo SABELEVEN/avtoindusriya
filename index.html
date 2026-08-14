@@ -1009,11 +1009,20 @@
       return closest;
     }
 
+    let rvSnapTimer;
     function rvGoTo(index){
       const total = rvSlides.length;
       const wrapped = ((index % total) + total) % total;
       const slide = rvSlides[wrapped];
-      slide.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+      const trackRect = rvTrack.getBoundingClientRect();
+      const slideRect = slide.getBoundingClientRect();
+      const target = rvTrack.scrollLeft + (slideRect.left - trackRect.left) - (rvTrack.clientWidth - slideRect.width) / 2;
+      // на мобильных scroll-snap иногда "перетягивает" скролл обратно поверх JS-анимации —
+      // на время программного скролла отключаем snap и включаем обратно после завершения
+      rvTrack.style.scrollSnapType = 'none';
+      rvTrack.scrollTo({left: target, behavior: 'smooth'});
+      clearTimeout(rvSnapTimer);
+      rvSnapTimer = setTimeout(() => { rvTrack.style.scrollSnapType = ''; }, 500);
     }
 
     rvPrev.addEventListener('click', (e) => { e.preventDefault(); rvGoTo(rvCurrentIndex() - 1); });
