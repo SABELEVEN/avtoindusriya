@@ -33,8 +33,9 @@
     font-size:16px;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  h1,h2,h3,h4,.brand{font-family:'Unbounded',sans-serif;color:var(--text-0);font-weight:700;line-height:1.08;text-transform:uppercase;}
+  h1,h2,h3,h4,.brand{font-family:'Unbounded',sans-serif;color:var(--text-0);font-weight:700;line-height:1.08;text-transform:uppercase;overflow-wrap:break-word;word-break:break-word;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
   img{max-width:100%;display:block;}
@@ -361,8 +362,8 @@
   @media (max-width:720px){
     .nav{gap:8px;}
     .nav-right .nav-phone{display:none;}
-    .nav-center .brand{display:none;}
-    .brandmark-sm{height:38px;}
+    .nav-center .brandmark-sm{display:none;}
+    .nav-center .brand{display:block;font-size:17px;}
     .nav-right .btn-primary{padding:10px 14px;font-size:11px;}
     .brand{font-size:15px;}
     section{padding:64px 0;}
@@ -382,6 +383,30 @@
     .form-row{grid-template-columns:1fr;}
     .cta-band{padding:36px 26px;}
     .foot-grid{grid-template-columns:1fr;}
+
+    /* центрирование текста и кнопок */
+    h2{font-size:clamp(26px,7.5vw,34px);text-align:center;}
+    .section-head{flex-direction:column;align-items:center;text-align:center;}
+    .section-head .lead{margin:0 auto;}
+    .lead{margin-left:auto;margin-right:auto;text-align:center;}
+    .brand-plate-wrap{display:flex;justify-content:center;}
+    .hero-content{text-align:center;}
+    .hero-text{display:flex;flex-direction:column;align-items:center;}
+    .hero-cta{flex-direction:column;align-items:center;width:100%;}
+    .hero-cta .btn{width:100%;max-width:360px;}
+    .hero-strip div{text-align:center;}
+    .adv-row{align-items:center;text-align:center;}
+    .step-v{text-align:center;display:flex;flex-direction:column;align-items:center;}
+    .team-body{text-align:center;}
+    .price-note{text-align:center;}
+    .cta-band{flex-direction:column;text-align:center;align-items:center;}
+    .cta-band > div:first-child{display:flex;flex-direction:column;align-items:center;}
+    .cta-actions{flex-direction:column;align-items:center;width:100%;}
+    .cta-actions .btn{width:100%;max-width:360px;}
+    .contact-panel,.form-panel{text-align:center;}
+    .cline{flex-direction:column;align-items:center;gap:4px;text-align:center;}
+    .cline span:last-child{text-align:center;}
+    .social-row{justify-content:center;}
   }
 </style>
 </head>
@@ -465,7 +490,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>01</b> — Услуги</span>
           <h2>Три направления,<br>которые закрывают всё</h2>
         </div>
         <p class="lead">От планового обслуживания до серьёзного ремонта ходовой — на современном оборудовании с гарантией.</p>
@@ -540,7 +564,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>02</b> — Почему мы</span>
           <h2>Ремонтируем честно</h2>
         </div>
       </div>
@@ -574,7 +597,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>03</b> — Как мы работаем</span>
           <h2>От заявки до выдачи</h2>
         </div>
       </div>
@@ -604,7 +626,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>04</b> — Наши мастера</span>
           <h2>Люди, которые чинят ваш автомобиль</h2>
         </div>
       </div>
@@ -654,7 +675,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>05</b> — Прайс-лист</span>
           <h2>Ориентировочные цены</h2>
         </div>
         <p class="lead">Итоговая стоимость зависит от марки автомобиля и определяется после диагностики.</p>
@@ -699,7 +719,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>06</b> — Отзывы</span>
           <h2>Что говорят клиенты</h2>
         </div>
       </div>
@@ -793,7 +812,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Раздел <b>07</b> — Контакты</span>
           <h2>Запишитесь на удобное время</h2>
         </div>
         <p class="lead">Оставьте заявку — перезвоним в течение 15 минут.</p>
@@ -984,14 +1002,11 @@
       const total = rvSlides.length;
       const wrapped = ((index % total) + total) % total;
       const slide = rvSlides[wrapped];
-      const trackRect = rvTrack.getBoundingClientRect();
-      const slideRect = slide.getBoundingClientRect();
-      const target = rvTrack.scrollLeft + (slideRect.left - trackRect.left) - (rvTrack.clientWidth - slideRect.width) / 2;
-      rvTrack.scrollTo({left: target, behavior: 'smooth'});
+      slide.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
     }
 
-    rvPrev.addEventListener('click', () => rvGoTo(rvCurrentIndex() - 1));
-    rvNext.addEventListener('click', () => rvGoTo(rvCurrentIndex() + 1));
+    rvPrev.addEventListener('click', (e) => { e.preventDefault(); rvGoTo(rvCurrentIndex() - 1); });
+    rvNext.addEventListener('click', (e) => { e.preventDefault(); rvGoTo(rvCurrentIndex() + 1); });
   }
 
   const form = document.getElementById('leadForm');
