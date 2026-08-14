@@ -277,10 +277,12 @@
   .rv-who b{font-family:'Unbounded';font-size:15px;color:var(--text-0);font-weight:600;text-transform:none;}
   .rv-who span{font-size:12px;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;}
   .rv-arrow{
-    position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:48px;height:48px;
+    position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:48px;height:48px;
     background:var(--bg-2);border:1px solid var(--line);color:var(--text-0);cursor:pointer;
     display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;
+    touch-action:manipulation;-webkit-tap-highlight-color:rgba(255,138,61,.25);pointer-events:auto;
   }
+  .rv-arrow svg{pointer-events:none;}
   .rv-arrow svg{width:20px;height:20px;}
   .rv-arrow:hover{border-color:var(--accent);color:var(--accent-2);}
   .rv-arrow.prev{left:2%;}
@@ -1009,7 +1011,6 @@
       return closest;
     }
 
-    let rvSnapTimer;
     function rvGoTo(index){
       const total = rvSlides.length;
       const wrapped = ((index % total) + total) % total;
@@ -1017,16 +1018,27 @@
       const trackRect = rvTrack.getBoundingClientRect();
       const slideRect = slide.getBoundingClientRect();
       const target = rvTrack.scrollLeft + (slideRect.left - trackRect.left) - (rvTrack.clientWidth - slideRect.width) / 2;
-      // на мобильных scroll-snap иногда "перетягивает" скролл обратно поверх JS-анимации —
-      // на время программного скролла отключаем snap и включаем обратно после завершения
-      rvTrack.style.scrollSnapType = 'none';
-      rvTrack.scrollTo({left: target, behavior: 'smooth'});
-      clearTimeout(rvSnapTimer);
-      rvSnapTimer = setTimeout(() => { rvTrack.style.scrollSnapType = ''; }, 500);
+      // мгновенный скролл — на мобильных smooth-скролл конфликтовал со scroll-snap
+      // и визуально "не срабатывал"
+      rvTrack.scrollTo({left: target, behavior: 'auto'});
     }
 
-    rvPrev.addEventListener('click', (e) => { e.preventDefault(); rvGoTo(rvCurrentIndex() - 1); });
-    rvNext.addEventListener('click', (e) => { e.preventDefault(); rvGoTo(rvCurrentIndex() + 1); });
+    let rvHandled = false;
+    function rvHandlePrev(e){
+      e.preventDefault(); e.stopPropagation();
+      if(rvHandled) return; rvHandled = true; setTimeout(() => rvHandled = false, 300);
+      rvGoTo(rvCurrentIndex() - 1);
+    }
+    function rvHandleNext(e){
+      e.preventDefault(); e.stopPropagation();
+      if(rvHandled) return; rvHandled = true; setTimeout(() => rvHandled = false, 300);
+      rvGoTo(rvCurrentIndex() + 1);
+    }
+
+    ['click','touchend'].forEach(evt => {
+      rvPrev.addEventListener(evt, rvHandlePrev, {passive:false});
+      rvNext.addEventListener(evt, rvHandleNext, {passive:false});
+    });
   }
 
   const form = document.getElementById('leadForm');
